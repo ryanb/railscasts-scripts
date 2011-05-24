@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+# Uploads compressed files to media.railscasts.com
+# rcupload path/to/123-foo-bar
+
+require "fileutils"
+
+def run(command)
+  puts "Running: #{command}"
+  system(command)
+end
+
+path = ($*.first || ".") + "/compressed/*"
+Dir[path].each do |file|
+  run "scp '#{file}' media.railscasts.com:/home/rbates/media.railscasts.com/assets/episodes/videos/"
+end
