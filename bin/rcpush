@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+
+# Push code to railscasts repository
+# rcpush
+
+require "rubygems"
+require "rest_client" # gem install rest-client
+
+class EpisodePusher
+  attr_reader :name
+
+  def initialize
+    @name = `pwd`[/\/([0-9]+-.+)\//, 1]
+  end
+
+  def run
+    create_repo
+    push
+  end
+
+  def create_repo
+    options = {login: ENV["GITHUB_USER"], token: ENV["GITHUB_TOKEN"], :name => "railscasts/#{name}", public: 1}
+    RestClient.post("https://github.com/api/v2/json/repos/create", options)
+  end
+
+  def push
+    system <<-COMMANDS
+      git init
+      git add .
+      git commit -m 'initial commit'
+      git remote add origin git@github.com:railscasts/#{name}.git
+      git push -u origin master
+    COMMANDS
+  end
+end
+
+EpisodePusher.new.run

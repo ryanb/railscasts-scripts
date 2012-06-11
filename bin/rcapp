@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Generate a new Rails app for RailsCasts
+
+rails new $* -m "$(dirname $0)/../templates/rails_template.rb"

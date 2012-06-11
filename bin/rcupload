@@ -10,7 +10,8 @@ def run(command)
   system(command)
 end
 
-path = ($*.first || ".") + "/compressed/*"
+path = ($*.first || ".") + "/upload/**/*.*"
 Dir[path].each do |file|
-  run "scp '#{file}' media.railscasts.com:/home/rbates/media.railscasts.com/assets/episodes/videos/"
+  run "scp '#{file}' media.railscasts.com:/home/rbates/media.railscasts.com/assets/episodes/#{file.sub('./upload/', '')}"
+  run "scp '#{file}' railscasts.com:~/code/railscasts/shared/assets/episodes/stills/" if file =~ /stills\/.*\.png/
 end

@@ -2,7 +2,9 @@
 
 Scripts used in the production of RailsCasts. http://railscasts.com/
 
-These scripts do the following:
+This is designed to be used as a plugin for [Oh My ZSH](https://github.com/robbyrussell/oh-my-zsh). To add it, symlink the project directory into `~/.oh-my-zsh/custom/plugins` and add it to your `.zshrc` file.
+
+**These scripts do the following:**
 
 1. Generate a new project directory with the proper templates
 

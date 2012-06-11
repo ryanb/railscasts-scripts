@@ -1,12 +1,43 @@
 #!/usr/bin/env ruby
 
 # Creates a new project directory given an episode name.
-# rcnew '123 Some Episode'
+# rcnew 123 'Some Episode'
 
 require "fileutils"
+require "erb"
 
-name = $*.join(" ")
-path = name.downcase.gsub(/[^0-9a-z]+/, ' ').strip.gsub(' ', '-')
-FileUtils.mkdir(path)
-FileUtils.mkdir("#{path}/edit")
-FileUtils.mkdir("#{path}/compressed")
+class EpisodeGenerator
+  attr_reader :number, :name
+
+  def initialize(number, name)
+    @number = number.to_i
+    @name = name
+  end
+
+  def run
+    FileUtils.cp_r(template_path, path)
+    Dir["#{path}/**/*.erb"].each do |erb|
+      result = ERB.new(File.read(erb)).result(binding)
+      File.write(erb.sub(/\.erb$/, ""), result)
+      FileUtils.rm(erb)
+    end
+  end
+
+  def dirname
+    [number, *@name.downcase.gsub(/[^0-9a-z]+/, " ").split].join("-")
+  end
+
+  def path
+    File.join(ENV["RAILSCASTS"], dirname)
+  end
+
+  def template_path
+    File.join(ENV["RAILSCASTS"], "template-#{pro? ? 'pro' : 'free'}")
+  end
+
+  def pro?
+    dirname =~ /revised$/ || @number % 2 > 0
+  end
+end
+
+EpisodeGenerator.new(*$*).run

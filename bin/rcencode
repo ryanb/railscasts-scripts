@@ -9,12 +9,17 @@ class RailsCastsEncoder
   def initialize(path)
     @source = File.expand_path(path)
     @name = File.basename(@source, ".*")
-    @out_dir = "#{File.dirname(@source)}/compressed"
+    if File.exist? "#{File.dirname(@source)}/upload/pro"
+      @out_dir = "#{File.dirname(@source)}/upload/pro/videos"
+    else
+      @out_dir = "#{File.dirname(@source)}/upload/videos"
+    end
   end
 
   def process
+    FileUtils.mkdir_p(@out_dir)
     compress "mp4" do |input, output|
-      run "HandBrakeCLI -i '#{input}' -o '#{output}' -e x264  -b 300 -a 1 -E ca_aac -B 96 -6 mono -R Auto -D 0.0 -f mp4 -r 30 --strict-anamorphic -O -x 'b-adapt=2:rc-lookahead=50'"
+      run "HandBrakeCLI -i '#{input}' -o '#{output}' -e x264  -b 300 -a 1 -E ca_aac -B 96 -6 mono -R Auto -D 0.0 -f mp4 -r 30 --strict-anamorphic -O -x 'cabac=0:ref=2:me=umh:bframes=0:weightp=0:subq=6:8x8dct=0:trellis=0'"
     end
     compress "m4v" do |input, output|
       run "HandBrakeCLI -i '#{input}' -o '#{output}' -e x264  -q 20.0 -a 1 -E ca_aac -B 96 -6 mono -R Auto -D 0.0 -f mp4 -X 640 -O -x 'cabac=0:ref=2:me=umh:bframes=0:weightp=0:subq=6:8x8dct=0:trellis=0'"
