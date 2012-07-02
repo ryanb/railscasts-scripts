@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+# Symlinks the project at path (or current path) into ~/code
+# rclink [path]
+
+require "fileutils"
+
+class ProjectLinker
+  def initialize(path = ".")
+    @path = path
+  end
+
+  def run
+    FileUtils.ln_sf(File.expand_path(@path), File.expand_path("~/code/#{File.dirname(@path)}"))
+  end
+end
+
+ProjectLinker.new(*$*).run
