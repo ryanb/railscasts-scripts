@@ -9,11 +9,7 @@ class RailsCastsEncoder
   def initialize(path)
     @source = File.expand_path(path)
     @name = File.basename(@source, ".*")
-    if File.exist? "#{File.dirname(@source)}/upload/pro"
-      @out_dir = "#{File.dirname(@source)}/upload/pro/videos"
-    else
-      @out_dir = "#{File.dirname(@source)}/upload/videos"
-    end
+    @out_dir = "#{File.dirname(@source)}/videos"
   end
 
   def process

@@ -1,17 +1,59 @@
 #!/usr/bin/env ruby
 
 # Uploads compressed files to media.railscasts.com
-# rcupload path/to/123-foo-bar
+# rcupload [video,still,code] [path]
 
-require "fileutils"
+class EpisodeUploader
+  attr_reader :type, :root
 
-def run(command)
-  puts "Running: #{command}"
-  system(command)
+  def initialize(type, path = ".")
+    @type = type
+    @root = File.expand_path(path)[/.+\/[0-9]{3}+-[^\/]+/]
+  end
+
+  def run
+    case type.to_sym
+    when :mp4, :m4v, :ogv, :webm then upload_video(type)
+    when :video then upload_video
+    when :still then upload_still
+    when :code then upload_code
+    else puts "unknown type, must be: video, still, code"
+    end
+  end
+
+  def upload_video(ext = "*")
+    Dir["#{root}/video/*.#{ext}"].each do |file|
+      command "scp '#{file}' media.railscasts.com:/home/rbates/media.railscasts.com/assets/episodes#{pro_path}/videos"
+    end
+  end
+
+  def upload_still
+    command "scp '#{root}/still/#{name}.png' railscasts.com:~/code/railscasts/shared/assets/episodes/stills/"
+  end
+
+  def upload_code
+    zip = "/tmp/#{name}.zip"
+    command "cd '#{root}/code' && git archive --format zip --output '#{zip}' master"
+    command "scp '#{zip}' media.railscasts.com:/home/rbates/media.railscasts.com/assets/episodes/sources/#{name}.zip"
+    command "rm '#{zip}'"
+  end
+
+  def pro_path
+    if name =~ /revised$/ || name.to_i % 2 > 0
+      "/pro"
+    else
+      ""
+    end
+  end
+
+  def name
+    File.basename(root)
+  end
+
+  def command(command)
+    puts "Running: #{command}"
+    system command
+  end
 end
 
-path = ($*.first || ".") + "/upload/**/*.*"
-Dir[path].each do |file|
-  run "scp '#{file}' media.railscasts.com:/home/rbates/media.railscasts.com/assets/episodes/#{file.sub('./upload/', '')}"
-  run "scp '#{file}' railscasts.com:~/code/railscasts/shared/assets/episodes/stills/" if file =~ /stills\/.*\.png/
-end
+EpisodeUploader.new(*$*).run

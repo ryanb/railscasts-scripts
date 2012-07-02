@@ -4,7 +4,7 @@
 # rcpush
 
 require "rubygems"
-require "rest_client" # gem install rest-client
+require "octokit" # gem install octokit
 
 class EpisodePusher
   attr_reader :name
@@ -19,8 +19,8 @@ class EpisodePusher
   end
 
   def create_repo
-    options = {login: ENV["GITHUB_USER"], token: ENV["GITHUB_TOKEN"], :name => "railscasts/#{name}", public: 1}
-    RestClient.post("https://github.com/api/v2/json/repos/create", options)
+    client = Octokit::Client.new(login: ENV["GITHUB_LOGIN"], token: ENV["GITHUB_TOKEN"])
+    client.create_repository(name, organization: "railscasts")
   end
 
   def push
