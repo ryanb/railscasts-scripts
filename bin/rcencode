@@ -9,7 +9,7 @@ class RailsCastsEncoder
   def initialize(path)
     @source = File.expand_path(path)
     @name = File.basename(@source, ".*")
-    @out_dir = "#{File.dirname(@source)}/videos"
+    @out_dir = "#{File.dirname(@source)}/video"
   end
 
   def process
