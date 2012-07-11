@@ -4,12 +4,9 @@ html, body {
   font-size: 14px;
 }
 
-a img {
-  border: none;
-}
-
 a {
   color: #0000FF;
+  img { border: none; }
 }
 
 .clear {
@@ -27,7 +24,7 @@ a {
   margin-top: 20px;
 }
 
-#flash_notice, #flash_error, #flash_alert {
+#flash_notice, #flash_alert {
   padding: 5px 8px;
   margin: 10px 0;
 }
@@ -37,16 +34,12 @@ a {
   border: solid 1px #6C6;
 }
 
-#flash_error, #flash_alert {
+#flash_alert {
   background-color: #FCC;
   border: solid 1px #C66;
 }
 
-.field_with_errors {
-  display: inline;
-}
-
-.error_messages {
+.error_messages, #error_explanation {
   width: 400px;
   border: 2px solid #CF0000;
   padding: 0px;
@@ -54,24 +47,23 @@ a {
   margin-bottom: 20px;
   background-color: #f0f0f0;
   font-size: 12px;
+
+  h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 12px;
+    margin: 0;
+    background-color: #c00;
+    color: #fff;
+  }
+
+  p { margin: 8px 10px; }
+  ul { margin-bottom: 0; }
 }
 
-.error_messages h2 {
-  text-align: left;
-  font-weight: bold;
-  padding: 5px 10px;
-  font-size: 12px;
-  margin: 0;
-  background-color: #c00;
-  color: #fff;
-}
-
-.error_messages p {
-  margin: 8px 10px;
-}
-
-.error_messages ul {
-  margin-bottom: 0;
+.field_with_errors {
+  display: inline;
 }
 
 form .field, form .actions {
