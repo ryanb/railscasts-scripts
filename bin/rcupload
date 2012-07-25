@@ -28,7 +28,7 @@ class EpisodeUploader
   end
 
   def upload_still
-    command "scp '#{root}/still/#{name}.png' railscasts.com:~/code/railscasts/shared/assets/episodes/stills/"
+    command "scp '#{root}/still/#{name}.png' railscasts.com:~/code/railscasts/shared/static/episodes/stills/"
   end
 
   def upload_code
