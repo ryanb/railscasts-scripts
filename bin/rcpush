@@ -14,12 +14,12 @@ class EpisodePusher
   end
 
   def run
-    create_repo
+    # create_repo
     push
   end
 
   def create_repo
-    client = Octokit::Client.new(login: ENV["GITHUB_LOGIN"], token: ENV["GITHUB_TOKEN"])
+    client = Octokit::Client.new(login: ENV["GITHUB_LOGIN"], password: ENV["GITHUB_TOKEN"])
     client.create_repository(name, organization: "railscasts")
   end
 
