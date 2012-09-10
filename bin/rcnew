@@ -9,9 +9,10 @@ require "erb"
 class EpisodeGenerator
   attr_reader :number, :name
 
-  def initialize(number, name)
+  def initialize(number, name, pro = false)
     @number = number.to_i
     @name = name
+    @pro = pro
   end
 
   def run
@@ -36,7 +37,7 @@ class EpisodeGenerator
   end
 
   def pro?
-    dirname =~ /revised$/ || @number % 2 > 0
+    @pro || dirname =~ /revised$/
   end
 end
 

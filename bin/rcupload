@@ -39,7 +39,7 @@ class EpisodeUploader
   end
 
   def pro_path
-    if name =~ /revised$/ || name.to_i % 2 > 0
+    if name =~ /revised$/ || File.exist?("#{@root}/pro.txt")
       "/pro"
     else
       ""
