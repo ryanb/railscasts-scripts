@@ -2,28 +2,24 @@
 
 Scripts used in the production of RailsCasts. http://railscasts.com/
 
-This is designed to be used as a plugin for [Oh My ZSH](https://github.com/robbyrussell/oh-my-zsh). To add it, symlink the project directory into `~/.oh-my-zsh/custom/plugins` and add it to your `.zshrc` file.
-
 **These scripts do the following:**
 
-1. Generate a new project directory with the proper templates
-
-```bash
-rcnew '123 Some Episode'
-```
-
-2. Process edited video by adding intro and normalizing and cleaning up audio (no script yet)
-
-3. Encode video into different formats
+1. Encode video into different formats
 
 ```bash
 rcencode 123-some-episode.mov
 ```
 
-4. Upload them to the server
+# Installation
 
-```bash
-rcupload path/to/123-some-episode/
-```
+### Prerequisites: [Homebrew](http://mxcl.github.com/homebrew/)
 
-If you have any suggestions on how to improve this, especially regards to encoding, please add an issue to this project.
+1. Clone this repo somewhere and symlink the tools to your path
+  * `ln -nsf /Users/jon/Sites/Rails/bolstr/railscasts-scripts/bin/* /usr/local/bin`
+1. Download the [Handbrake command line tool](http://handbrake.fr/downloads2.php) and install (copy or move) it somewhere accessible to your path.
+  * I chose `/usr/local/bin/HandBrakeCLI`
+1. `brew install ffmpeg --with-theora --with-libvpx --with-libvorbis`
+1. edit the `/usr/local/bin/rcencode` script and edit the webm ffmpeg lines -b option to read -b:a.
+  * Example: `run "ffmpeg -pass 1 -passlogfile '#{output}' -keyint_min 0 -g 250 -skip_threshold 0 -qmin 1 -qmax 51 -i '#{input}' -vcodec libvpx -b:a 358400 -an -f webm -y NUL -threads 0"`
+
+Everything should 'just work' now... hopefully!
