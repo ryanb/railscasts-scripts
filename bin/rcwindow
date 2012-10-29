@@ -1,0 +1,11 @@
+#!/usr/bin/env osascript
+on run argv
+  if argv is equal to {} then
+    set argv to {"Safari", "Terminal", "TextMate"}
+  end if
+  repeat with appName in argv
+    tell application appName
+      set bounds of window 1 to {0, 0, 961, 600}
+    end tell
+  end repeat
+end run
