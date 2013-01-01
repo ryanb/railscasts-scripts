@@ -1,0 +1,18 @@
+#!/usr/bin/env osascript
+#
+# This will resize the front window of the given applications
+# to a size that fits in my screencast recording area (960x600).
+#
+# Usage:
+# $ rcwindow Safari Terminal
+#
+on run argv
+  if argv is equal to {} then
+    set argv to {"Safari", "Terminal", "TextMate"}
+  end if
+  repeat with appName in argv
+    tell application appName
+      set bounds of window 1 to {0, 0, 961, 600}
+    end tell
+  end repeat
+end run
