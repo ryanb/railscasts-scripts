@@ -23,7 +23,7 @@ class EpisodeUploader
 
   def upload_video(ext = "*")
     Dir["#{root}/video/*.#{ext}"].each do |file|
-      command "scp '#{file}' ryanrbates@media.railscasts.com:/home/ryanrbates/media.railscasts.com/assets/episodes#{pro_path}/videos"
+      command "scp '#{file}' media.railscasts.com:/home/ryanrbates/media.railscasts.com/assets/episodes#{pro_path}/videos"
     end
   end
 
@@ -34,7 +34,7 @@ class EpisodeUploader
   def upload_code
     zip = "/tmp/#{name}.zip"
     command "cd '#{root}/code' && git archive --format zip --output '#{zip}' master"
-    command "scp '#{zip}' ryanrbates@media.railscasts.com:/home/ryanrbates/media.railscasts.com/assets/episodes/sources/#{name}.zip"
+    command "scp '#{zip}' media.railscasts.com:/home/ryanrbates/media.railscasts.com/assets/episodes/sources/#{name}.zip"
     command "rm '#{zip}'"
   end
 
